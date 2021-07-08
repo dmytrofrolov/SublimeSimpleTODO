@@ -15,6 +15,7 @@ $ git clone https://github.com/jugyo/SublimeSimpleTODO.git SimpleTODO
 ## Key Binding
 
     [
+      { "keys": ["super+shift+k", "super+shift+t"], "command": "simple_todo", "args": {"mode": "list_and_select"} },
       { "keys": ["super+shift+k", "super+shift+t"], "command": "simple_todo", "args": {"mode": "list"} },
       { "keys": ["super+shift+k", "super+shift+a"], "command": "simple_todo", "args": {"mode": "add"} }
     ]

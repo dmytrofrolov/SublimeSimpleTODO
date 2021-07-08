@@ -36,6 +36,8 @@ class SimpleTodoCommand(sublime_plugin.TextCommand):
             self.add()
         elif mode == "list":
             self.list()
+        elif mode == "list_and_select":
+            self.list_and_select()
 
     def add(self):
         def on_done(text):
@@ -72,13 +74,35 @@ class SimpleTodoCommand(sublime_plugin.TextCommand):
         items = [["+ New", ""]] + [[i["text"], "%s:%s" % (i["file_name"], int(i["line_number"]))] for i in todo]
         sublime.set_timeout(lambda: self.window.show_quick_panel(items, on_done), 0)
 
+    def list_and_select(self):
+        settings = self.load_settings()
+        todo = settings.get(self.directory)
+        if todo == None:
+            todo = []
+
+        def on_done(index):
+            item = todo[index]
+            row = int(item["line_number"]) - 1
+            file_path = "{}:{}:{}".format(os.path.join(self.directory, item["file_name"]), row+1, 0)
+            view = self.window.open_file(file_path, sublime.ENCODED_POSITION)
+            point = view.text_point(row ,0)
+            regison = view.line(point)
+            view.sel().clear()
+            view.sel().add(regison)
+            view.show_at_center(regison)
+
+        items = [[i["text"], "%s:%s" % (i["file_name"], int(i["line_number"]))] for i in todo]
+        sublime.set_timeout(lambda: self.window.show_quick_panel(items, on_done), 0)
+
     def actions(self, item):
         def on_done(index):
             if index == 0:
                 self.list()
             elif index == 1:
-                view = self.window.open_file(os.path.join(self.directory, item["file_name"]))
-                point = view.text_point(int(item["line_number"]) - 1 ,0)
+                row = int(item["line_number"])
+                file_path = "{}:{}:{}".format(os.path.join(self.directory, item["file_name"]), row, 0)
+                view = self.window.open_file(file_path, sublime.ENCODED_POSITION)
+                point = view.text_point(row ,0)
                 regison = view.line(point)
                 view.sel().clear()
                 view.sel().add(regison)
