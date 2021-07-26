@@ -9,7 +9,7 @@ Sublime Text plugin to manage TODO.
 
 ```
 $ cd ~/Library/Application\ Support/Sublime\ Text\ 3/Packages
-$ git clone https://github.com/jugyo/SublimeSimpleTODO.git SimpleTODO
+$ git clone https://github.com/dmytrofrolov/SublimeSimpleTODO.git SimpleTODO
 ```
 
 ## Key Binding
